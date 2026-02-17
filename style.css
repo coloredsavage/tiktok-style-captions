@@ -242,12 +242,15 @@ input[type="radio"][name="color"]:checked + .color-label {
 #preview {
   flex: 1;
   background: #e8e8e8;
-  padding: 60px 40px;
   height: 420px;
+  overflow: hidden;
+}
+
+#preview-scroll {
+  height: 100%;
   overflow-y: auto;
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  overflow-x: visible;
+  padding: 50px 40px;
 }
 
 /* Footer */
