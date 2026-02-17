@@ -41,11 +41,6 @@
 
 .line:empty { visibility: hidden; height: 1em; }
 
-/* Wrap text mode */
-#box.wrap-text .line {
-  white-space: pre-wrap;
-  word-break: break-word;
-}
 
 /* Base corner removal by alignment */
 #box[data-align=left]  .line:not(:first-child) { border-top-left-radius: 0; }

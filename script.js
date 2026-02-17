@@ -137,30 +137,47 @@ transparentBackgroundCheckboxEl.onchange = () => {
   }
 };
 
-// Wrap text toggle
-function applyWrap() {
-  const isWrapped = wrapTextCheckboxEl.checked;
-  const width = wrapWidthEl.value;
+// Measure text width using canvas (matches font exactly)
+const _measureCanvas = document.createElement("canvas");
+const _measureCtx = _measureCanvas.getContext("2d");
 
-  boxEl.classList.toggle("wrap-text", isWrapped);
-  wrapWidthRowEl.classList.toggle("visible", isWrapped);
+function measureTextWidth(text, fontScale) {
+  const fontSize = 39 * (fontScale || 1);
+  _measureCtx.font = `600 ${fontSize}px Montserrat, Arial, sans-serif`;
+  return _measureCtx.measureText(text).width;
+}
 
-  // Apply or remove max-width on every line
-  boxEl.querySelectorAll(".line").forEach(line => {
-    line.style.maxWidth = isWrapped ? `${width}px` : "";
-  });
+// Split a single string into lines that fit within maxPx
+function splitIntoWrappedLines(text, maxPx, fontScale) {
+  const words = text.split(" ");
+  const lines = [];
+  let current = "";
 
-  wrapWidthValueEl.textContent = `${width}px`;
+  // Account for padding (0.5em each side = ~1em total at 39px = ~39px)
+  const paddingPx = 39 * (fontScale || 1) * 0.5 * 2;
+  const availablePx = maxPx - paddingPx;
+
+  for (const word of words) {
+    const candidate = current ? current + " " + word : word;
+    if (measureTextWidth(candidate, fontScale) <= availablePx) {
+      current = candidate;
+    } else {
+      if (current) lines.push(current);
+      current = word;
+    }
+  }
+  if (current) lines.push(current);
+  return lines.length ? lines : [text];
 }
 
 wrapTextCheckboxEl.onchange = () => {
-  applyWrap();
-  applyCornerDetection();
+  wrapWidthRowEl.classList.toggle("visible", wrapTextCheckboxEl.checked);
+  textEl.dispatchEvent(new Event("change"));
 };
 
 wrapWidthEl.oninput = () => {
-  applyWrap();
-  applyCornerDetection();
+  wrapWidthValueEl.textContent = `${wrapWidthEl.value}px`;
+  textEl.dispatchEvent(new Event("change"));
 };
 
 // Core corner detection algorithm
@@ -209,24 +226,28 @@ function applyCornerDetection() {
 textEl.onchange = evt => {
   removeAllChildNodes(boxEl);
 
-  const lines = evt.target.value.split("\n");
+  const isWrapping = wrapTextCheckboxEl.checked;
+  const maxPx = parseInt(wrapWidthEl.value);
+  const inputLines = evt.target.value.split("\n");
 
-  for (let i = 0; i < lines.length; i++) {
-    // Support font scaling with pipe syntax: "Text|1.5"
-    let [lineText, lineScale] = lines[i].split("|");
+  for (let i = 0; i < inputLines.length; i++) {
+    let [lineText, lineScale] = inputLines[i].split("|");
     lineScale = parseFloat(lineScale) || 1;
 
-    // Create line element
-    const lineEl = document.createElement("div");
-    lineEl.className = "line";
-    lineEl.textContent = lineText;
-    lineEl.style.setProperty("--font-scale", lineScale);
+    // If wrap is on, split this input line into multiple bubbles
+    const bubbles = isWrapping
+      ? splitIntoWrappedLines(lineText, maxPx, lineScale)
+      : [lineText];
 
-    boxEl.appendChild(lineEl);
+    for (const bubbleText of bubbles) {
+      const lineEl = document.createElement("div");
+      lineEl.className = "line";
+      lineEl.textContent = bubbleText;
+      lineEl.style.setProperty("--font-scale", lineScale);
+      boxEl.appendChild(lineEl);
+    }
   }
 
-  // Apply wrap state then corner detection
-  applyWrap();
   applyCornerDetection();
 };
 
