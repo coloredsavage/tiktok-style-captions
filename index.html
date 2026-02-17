@@ -5,252 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TikTok-Style Captions Generator</title>
   <link rel="stylesheet" href="style.css">
-
-  <!-- Capture HTML elements as an image -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
 </head>
 
 <body>
-  <div class="container">
-    <header>
-      <h1>🎬 TikTok-Style Captions</h1>
-      <p class="subtitle">Create smooth, rounded text captions with intelligent corner detection</p>
-      <div class="github-link">
-        <a href="https://github.com/yourusername/tiktok-style-captions" target="_blank">
-          ⭐ Star on GitHub
-        </a>
+  <div id="page">
+
+    <h1>TikTok-Style Captions</h1>
+    <p>Inspired by <a href="https://pelicanizer.com/newsites/roundtext/" target="_blank">Pelicanizer's Rounded Text Generator</a>. <a href="https://github.com/yourusername/tiktok-style-captions">GitHub</a> · MIT License</p>
+
+    <hr>
+
+    <div id="layout">
+      <div id="controls">
+        <p><strong>Text</strong> (one line per caption)</p>
+        <textarea id="text" rows="6">what i wish i knew
+before 6 months of rejections
+found something that fixed it</textarea>
+
+        <p><strong>Align</strong></p>
+        <div id="align-inputs">
+          <input type="radio" name="align" id="align-left" value="left" checked>
+          <label for="align-left">Left</label>
+          <input type="radio" name="align" id="align-center" value="center">
+          <label for="align-center">Center</label>
+          <input type="radio" name="align" id="align-right" value="right">
+          <label for="align-right">Right</label>
+        </div>
+
+        <p><strong>Color</strong></p>
+        <div id="color-inputs"></div>
+
+        <p><input type="checkbox" id="misc-transparent-bg"> <label for="misc-transparent-bg">Transparent background</label></p>
+
+        <br>
+        <button id="button-create">Download PNG</button>
       </div>
-    </header>
 
-    <div class="demo-section">
-      <!-- Preview -->
-      <div class="preview-container">
-        <h3>Preview</h3>
-        <div class="preview-box">
-          <div id="box" data-align="left" style="--bg-color: #ffffff; --fg-color: #000000;">
-            <div class="line">What I wish I knew</div>
-            <div class="line">before starting</div>
-            <div class="line">my first project</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Controls -->
-      <div class="controls-container">
-        <h3>Customize</h3>
-
-        <!-- Text Input -->
-        <div class="control-group">
-          <label for="text">Text (one line per caption)</label>
-          <textarea id="text" rows="8" placeholder="Enter your text here...
-Each line creates a new caption
-Add |2 to scale text (e.g., Big text|2)">What I wish I knew
-before starting
-my first project</textarea>
-          <small>💡 Tip: Use <code>|1.5</code> after text to scale that line</small>
-        </div>
-
-        <!-- Alignment -->
-        <div class="control-group">
-          <label>Alignment</label>
-          <div id="align-inputs" class="radio-group">
-            <input type="radio" name="align" id="align-left" value="left" checked>
-            <label for="align-left">Left</label>
-
-            <input type="radio" name="align" id="align-center" value="center">
-            <label for="align-center">Center</label>
-
-            <input type="radio" name="align" id="align-right" value="right">
-            <label for="align-right">Right</label>
-          </div>
-        </div>
-
-        <!-- Colors -->
-        <div class="control-group">
-          <label>Color Scheme</label>
-          <div id="color-inputs"></div>
-        </div>
-
-        <!-- Options -->
-        <div class="control-group">
-          <div class="checkbox-wrapper">
-            <input type="checkbox" id="misc-transparent-bg" name="transparent-bg">
-            <label for="misc-transparent-bg">Transparent background</label>
-          </div>
-        </div>
-
-        <!-- Export -->
-        <button id="button-create" class="export-btn">
-          📥 Download as PNG
-        </button>
+      <div id="preview">
+        <div id="box" data-align="left" style="--bg-color: #ffffff; --fg-color: #000000;"></div>
       </div>
     </div>
 
-    <!-- How It Works Section -->
-    <div class="explanation-section">
-      <h2>How It Works</h2>
-
-      <div class="explanation-grid">
-        <div class="explanation-card">
-          <h4>🧮 Smart Algorithm</h4>
-          <p>Compares adjacent line widths and automatically decides which corners to round or connect.</p>
-          <div class="code-example">
-            <pre>if (width1 > width2 + tolerance) {
-  roundTopCorners();
-} else if (similar) {
-  connectLines();
-}</pre>
-          </div>
-        </div>
-
-        <div class="explanation-card">
-          <h4>🎨 CSS Magic</h4>
-          <p>Uses pseudo-elements with box-shadows to create smooth rounded corner cutouts.</p>
-          <div class="code-example">
-            <pre>.corner::before {
-  box-shadow: 0.2em -0.2em 0 color;
-  border-radius: 0.2em;
-}</pre>
-          </div>
-        </div>
-
-        <div class="explanation-card">
-          <h4>📏 Tolerance-Based</h4>
-          <p>Lines are "similar" if within border-radius distance (doubled for center-align).</p>
-          <div class="code-example">
-            <pre>tolerance = borderRadius * fontSize;
-if (centerAlign) tolerance *= 2;</pre>
-          </div>
-        </div>
-      </div>
-
-      <div class="visual-example">
-        <h4>Corner Detection Examples</h4>
-        <div class="examples">
-          <div class="example">
-            <div class="mini-box" data-align="left">
-              <div class="mini-line" style="width: 200px;">Longer line text here</div>
-              <div class="mini-line corner-tr" style="width: 120px;">Shorter</div>
-            </div>
-            <p><strong>Narrower → Top corners round</strong></p>
-          </div>
-
-          <div class="example">
-            <div class="mini-box" data-align="left">
-              <div class="mini-line corner-br" style="width: 120px;">Short</div>
-              <div class="mini-line" style="width: 200px;">Longer line text here</div>
-            </div>
-            <p><strong>Wider → Bottom corners round</strong></p>
-          </div>
-
-          <div class="example">
-            <div class="mini-box" data-align="left">
-              <div class="mini-line connect-b" style="width: 180px;">Similar width A</div>
-              <div class="mini-line connect-t" style="width: 180px;">Similar width B</div>
-            </div>
-            <p><strong>Similar → Connected seamlessly</strong></p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Usage Section -->
-    <div class="usage-section">
-      <h2>Usage</h2>
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="html">HTML</button>
-        <button class="tab-btn" data-tab="js">JavaScript</button>
-        <button class="tab-btn" data-tab="playwright">Playwright</button>
-      </div>
-
-      <div class="tab-content active" data-tab="html">
-        <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-  &lt;link rel="stylesheet" href="style.css"&gt;
-&lt;/head&gt;
-&lt;body&gt;
-  &lt;div id="box" data-align="left"&gt;
-    &lt;div class="line"&gt;First line&lt;/div&gt;
-    &lt;div class="line"&gt;Second line&lt;/div&gt;
-  &lt;/div&gt;
-  &lt;script src="script.js"&gt;&lt;/script&gt;
-&lt;/body&gt;
-&lt;/html&gt;</code></pre>
-      </div>
-
-      <div class="tab-content" data-tab="js">
-        <pre><code>// Update text dynamically
-const box = document.getElementById('box');
-const text = "Line 1\nBigger line|1.5\nLine 3";
-
-// Clear and rebuild
-box.innerHTML = '';
-text.split('\n').forEach(line => {
-  const [text, scale] = line.split('|');
-  const div = document.createElement('div');
-  div.className = 'line';
-  div.textContent = text;
-  if (scale) {
-    div.style.setProperty('--font-scale', scale);
-  }
-  box.appendChild(div);
-});
-
-// Run corner detection (from script.js)
-applyCornerDetection();</code></pre>
-      </div>
-
-      <div class="tab-content" data-tab="playwright">
-        <pre><code>const { chromium } = require('playwright');
-
-const browser = await chromium.launch();
-const page = await browser.newPage();
-
-await page.setContent(`
-  &lt;!DOCTYPE html&gt;
-  &lt;html&gt;
-  &lt;head&gt;
-    &lt;style&gt;/* Include style.css */&lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id="box" data-align="left"&gt;
-      &lt;div class="line"&gt;Caption line 1&lt;/div&gt;
-      &lt;div class="line"&gt;Caption line 2&lt;/div&gt;
-    &lt;/div&gt;
-    &lt;script&gt;/* Include corner detection */&lt;/script&gt;
-  &lt;/body&gt;
-  &lt;/html&gt;
-`, { waitUntil: 'networkidle' });
-
-await page.waitForTimeout(100); // Let layout settle
-await page.screenshot({ path: 'caption.png' });
-await browser.close();</code></pre>
-      </div>
-    </div>
-
-    <footer>
-      <p>Made with ❤️ for the creator community | <a href="https://github.com/yourusername/tiktok-style-captions">GitHub</a> | MIT License</p>
-      <p class="credits">Inspired by <a href="https://pelicanizer.com/newsites/roundtext/" target="_blank">Pelicanizer's Rounded Text Generator</a> - open-sourced with ❤️ for the creator community</p>
-    </footer>
   </div>
 
   <script src="script.js"></script>
-  <script>
-    // Tab switching
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const tab = btn.dataset.tab;
-
-        // Update buttons
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        // Update content
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.querySelector(`.tab-content[data-tab="${tab}"]`).classList.add('active');
-      });
-    });
-  </script>
 </body>
 </html>
