@@ -41,6 +41,12 @@
 
 .line:empty { visibility: hidden; height: 1em; }
 
+/* Wrap text mode */
+#box.wrap-text .line {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 /* Base corner removal by alignment */
 #box[data-align=left]  .line:not(:first-child) { border-top-left-radius: 0; }
 #box[data-align=left]  .line:not(:last-child)  { border-bottom-left-radius: 0; }
@@ -206,6 +212,27 @@ input[type="radio"][name="color"]:checked + .color-label {
 
 .control-group > label input[type="checkbox"] {
   margin-right: 6px;
+}
+
+#wrap-width-row {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+#wrap-width-row.visible {
+  display: flex;
+}
+
+#wrap-width {
+  flex: 1;
+}
+
+#wrap-width-value {
+  font-size: 12px;
+  color: #666;
+  min-width: 36px;
 }
 
 #button-create {

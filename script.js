@@ -47,6 +47,10 @@ const createButtonEl = document.getElementById("button-create");
 const textEl = document.getElementById("text");
 const customBgColorEl = document.getElementById("custom-bg-color");
 const customFgColorEl = document.getElementById("custom-fg-color");
+const wrapTextCheckboxEl = document.getElementById("misc-wrap-text");
+const wrapWidthEl = document.getElementById("wrap-width");
+const wrapWidthValueEl = document.getElementById("wrap-width-value");
+const wrapWidthRowEl = document.getElementById("wrap-width-row");
 
 // Generate color input radio buttons
 COLORS.forEach((color, i) => {
@@ -133,6 +137,32 @@ transparentBackgroundCheckboxEl.onchange = () => {
   }
 };
 
+// Wrap text toggle
+function applyWrap() {
+  const isWrapped = wrapTextCheckboxEl.checked;
+  const width = wrapWidthEl.value;
+
+  boxEl.classList.toggle("wrap-text", isWrapped);
+  wrapWidthRowEl.classList.toggle("visible", isWrapped);
+
+  // Apply or remove max-width on every line
+  boxEl.querySelectorAll(".line").forEach(line => {
+    line.style.maxWidth = isWrapped ? `${width}px` : "";
+  });
+
+  wrapWidthValueEl.textContent = `${width}px`;
+}
+
+wrapTextCheckboxEl.onchange = () => {
+  applyWrap();
+  applyCornerDetection();
+};
+
+wrapWidthEl.oninput = () => {
+  applyWrap();
+  applyCornerDetection();
+};
+
 // Core corner detection algorithm
 function applyCornerDetection() {
   const align = boxEl.dataset.align;
@@ -195,7 +225,8 @@ textEl.onchange = evt => {
     boxEl.appendChild(lineEl);
   }
 
-  // Apply corner detection algorithm
+  // Apply wrap state then corner detection
+  applyWrap();
   applyCornerDetection();
 };
 
