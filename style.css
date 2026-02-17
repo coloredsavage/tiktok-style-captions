@@ -1,0 +1,654 @@
+/* ========================================
+   CORE CAPTION STYLES
+   These are the essential styles for the
+   TikTok-style caption functionality
+   ======================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+#box {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+#box[data-align=left] {
+  align-items: start;
+}
+
+#box[data-align=center] {
+  align-items: center;
+}
+
+#box[data-align=right] {
+  align-items: end;
+}
+
+.line {
+  --font-scale: 1;
+  --border-radius: 0.2em;
+
+  position: relative;
+
+  background-color: var(--bg-color, #ffffff);
+  color: var(--fg-color, #000000);
+
+  font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-size: calc(26px * var(--font-scale));
+  font-weight: 600;
+
+  width: fit-content;
+  padding: 0.4em 0.8em;
+  border-radius: 0.2em;
+
+  text-align: center;
+  white-space: pre;
+}
+
+.line:empty {
+  visibility: hidden;
+  height: 1em;
+}
+
+/* Base corner removal based on alignment */
+#box[data-align=left] .line:not(:first-child) {
+  border-top-left-radius: 0;
+}
+
+#box[data-align=left] .line:not(:last-child) {
+  border-bottom-left-radius: 0;
+}
+
+#box[data-align=right] .line:not(:first-child) {
+  border-top-right-radius: 0;
+}
+
+#box[data-align=right] .line:not(:last-child) {
+  border-bottom-right-radius: 0;
+}
+
+/* Corner classes applied by JavaScript */
+.line.corner-tl {
+  border-top-left-radius: 0;
+}
+
+.line.corner-bl {
+  border-bottom-left-radius: 0;
+}
+
+.line.corner-tr {
+  border-top-right-radius: 0;
+}
+
+.line.corner-br {
+  border-bottom-right-radius: 0;
+}
+
+/* Pseudo-elements for smooth rounded corner cutouts */
+.line.corner-tl::before,
+.line.corner-bl::before,
+.line.corner-tr::after,
+.line.corner-br::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+
+  background-color: transparent;
+
+  width: 0.4em;
+  height: 100%;
+
+  clip-path: inset(-1px);
+}
+
+.line.corner-tl::before,
+.line.corner-bl::before {
+  left: -0.4em;
+}
+
+.line.corner-tr::after,
+.line.corner-br::after {
+  right: -0.4em;
+}
+
+.line.corner-tl::before {
+  border-top-right-radius: 0.2em;
+  box-shadow: 0.2em -0.2em 0 var(--bg-color, #ffffff);
+}
+
+.line.corner-bl::before {
+  border-bottom-right-radius: 0.2em;
+  box-shadow: 0.2em 0.2em 0 var(--bg-color, #ffffff);
+}
+
+.line.corner-tl.corner-bl::before {
+  border-top-right-radius: 0.2em;
+  border-bottom-right-radius: 0.2em;
+  box-shadow: 0.2em -0.2em 0 var(--bg-color, #ffffff),
+              0.2em 0.2em 0 var(--bg-color, #ffffff);
+}
+
+.line.corner-tr::after {
+  border-top-left-radius: 0.2em;
+  box-shadow: -0.2em -0.2em 0 var(--bg-color, #ffffff);
+}
+
+.line.corner-br::after {
+  border-bottom-left-radius: 0.2em;
+  box-shadow: -0.2em 0.2em 0 var(--bg-color, #ffffff);
+}
+
+.line.corner-tr.corner-br::after {
+  border-top-left-radius: 0.2em;
+  border-bottom-left-radius: 0.2em;
+  box-shadow: -0.2em -0.2em 0 var(--bg-color, #ffffff),
+              -0.2em 0.2em 0 var(--bg-color, #ffffff);
+}
+
+/* Connected lines (similar width) */
+.line.connect-b {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.line.connect-t {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* ========================================
+   DEMO PAGE STYLES
+   Everything below is for the demo page UI
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --primary: #3b82f6;
+  --primary-dark: #2563eb;
+  --bg: #f8fafc;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --success: #10b981;
+  --code-bg: #1e293b;
+  --code-text: #e2e8f0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+header h1 {
+  font-size: 3rem;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  margin: 0 0 20px 0;
+}
+
+.github-link a {
+  display: inline-block;
+  padding: 12px 24px;
+  background: var(--text);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.github-link a:hover {
+  background: #000;
+  transform: translateY(-2px);
+}
+
+/* Demo Section */
+.demo-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+@media (max-width: 768px) {
+  .demo-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+.preview-container,
+.controls-container {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.preview-container h3,
+.controls-container h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.preview-box {
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 40px 20px;
+}
+
+/* Controls */
+.control-group {
+  margin-bottom: 24px;
+}
+
+.control-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.control-group small {
+  display: block;
+  margin-top: 6px;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.control-group small code {
+  background: var(--border);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85em;
+}
+
+#text {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+#text:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.radio-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 6px;
+}
+
+.radio-group label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+/* Color Inputs */
+#color-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 10px;
+}
+
+.color-label {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.color-label:hover {
+  transform: scale(1.1);
+  border-color: var(--primary);
+}
+
+input[type="radio"][name="color"] {
+  display: none;
+}
+
+input[type="radio"][name="color"]:checked + .color-label {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  transform: scale(1.05);
+}
+
+/* Checkbox */
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.checkbox-wrapper label {
+  cursor: pointer;
+  margin: 0;
+}
+
+/* Export Button */
+.export-btn {
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.export-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.export-btn:active {
+  transform: translateY(0);
+}
+
+/* Explanation Section */
+.explanation-section {
+  margin-bottom: 60px;
+}
+
+.explanation-section h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.explanation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.explanation-card {
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.explanation-card h4 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.explanation-card p {
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.code-example {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.code-example pre {
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Visual Examples */
+.visual-example {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.visual-example h4 {
+  margin-top: 0;
+  font-size: 1.25rem;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.examples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.example {
+  text-align: center;
+}
+
+.example p {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Mini box for examples */
+.mini-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.mini-line {
+  --border-radius: 0.2em;
+  position: relative;
+  background-color: #3b82f6;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 0.4em 0.8em;
+  border-radius: 0.2em;
+  text-align: center;
+  white-space: nowrap;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.mini-line:first-child {
+  border-top-left-radius: 0.2em;
+}
+
+.mini-line:last-child {
+  border-bottom-left-radius: 0.2em;
+}
+
+.mini-line.corner-tr {
+  border-top-right-radius: 0;
+}
+
+.mini-line.corner-br {
+  border-bottom-right-radius: 0;
+}
+
+.mini-line.corner-tr::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: -0.4em;
+  background-color: transparent;
+  width: 0.4em;
+  height: 100%;
+  border-top-left-radius: 0.2em;
+  box-shadow: -0.2em -0.2em 0 #3b82f6;
+  clip-path: inset(-1px);
+}
+
+.mini-line.corner-br::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  right: -0.4em;
+  background-color: transparent;
+  width: 0.4em;
+  height: 100%;
+  border-bottom-left-radius: 0.2em;
+  box-shadow: -0.2em 0.2em 0 #3b82f6;
+  clip-path: inset(-1px);
+}
+
+.mini-line.connect-b {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.mini-line.connect-t {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Usage Section */
+.usage-section {
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 60px;
+}
+
+.usage-section h2 {
+  margin-top: 0;
+  font-size: 2rem;
+  margin-bottom: 24px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border);
+}
+
+.tab-btn {
+  padding: 12px 24px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  margin-bottom: -2px;
+}
+
+.tab-btn:hover {
+  color: var(--text);
+}
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.tab-content pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 24px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0;
+}
+
+.tab-content code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+
+footer a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+.credits {
+  margin-top: 8px;
+  font-size: 0.875rem;
+}
