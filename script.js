@@ -51,6 +51,8 @@ const wrapTextCheckboxEl = document.getElementById("misc-wrap-text");
 const wrapWidthEl = document.getElementById("wrap-width");
 const wrapWidthValueEl = document.getElementById("wrap-width-value");
 const wrapWidthRowEl = document.getElementById("wrap-width-row");
+const fontSizeEl = document.getElementById("font-size");
+const fontSizeValueEl = document.getElementById("font-size-value");
 
 // Generate color input radio buttons
 COLORS.forEach((color, i) => {
@@ -142,7 +144,8 @@ const _measureCanvas = document.createElement("canvas");
 const _measureCtx = _measureCanvas.getContext("2d");
 
 function measureTextWidth(text, fontScale) {
-  const fontSize = 39 * (fontScale || 1);
+  const baseSize = parseInt(fontSizeEl.value) || 39;
+  const fontSize = baseSize * (fontScale || 1);
   _measureCtx.font = `600 ${fontSize}px Montserrat, Arial, sans-serif`;
   return _measureCtx.measureText(text).width;
 }
@@ -153,8 +156,8 @@ function splitIntoWrappedLines(text, maxPx, fontScale) {
   const lines = [];
   let current = "";
 
-  // Account for padding (0.5em each side = ~1em total at 39px = ~39px)
-  const paddingPx = 39 * (fontScale || 1) * 0.5 * 2;
+  const baseSize = parseInt(fontSizeEl.value) || 39;
+  const paddingPx = baseSize * (fontScale || 1) * 0.5 * 2;
   const availablePx = maxPx - paddingPx;
 
   for (const word of words) {
@@ -169,6 +172,14 @@ function splitIntoWrappedLines(text, maxPx, fontScale) {
   if (current) lines.push(current);
   return lines.length ? lines : [text];
 }
+
+// Font size control
+fontSizeEl.oninput = () => {
+  const size = fontSizeEl.value;
+  fontSizeValueEl.textContent = size + 'px';
+  boxEl.style.setProperty("--base-font-size", size + "px");
+  textEl.dispatchEvent(new Event("change"));
+};
 
 wrapTextCheckboxEl.onchange = () => {
   wrapWidthRowEl.classList.toggle("visible", wrapTextCheckboxEl.checked);
