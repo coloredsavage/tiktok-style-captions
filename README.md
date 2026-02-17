@@ -4,7 +4,7 @@ Create smooth, rounded text captions just like TikTok videos - with intelligent 
 
 > **Inspired by** [Pelicanizer's Rounded Text Generator](https://pelicanizer.com/newsites/roundtext/) - this open-source implementation adds automation support, comprehensive documentation, and examples for video creators.
 
-[**🎨 Live Demo**](https://yourusername.github.io/tiktok-style-captions) <!-- Update with your GitHub username -->
+[**🎨 Live Demo**](https://coloredsavage.github.io/tiktok-style-captions) <!-- Update with your GitHub username -->
 
 ![Demo Screenshot](demo.gif)
 
