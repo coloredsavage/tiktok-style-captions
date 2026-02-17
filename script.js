@@ -1,3 +1,16 @@
+/**
+ * TikTok-Style Captions Generator
+ *
+ * Corner detection algorithm inspired by Pelicanizer's Rounded Text Generator
+ * https://pelicanizer.com/newsites/roundtext/
+ *
+ * This implementation adds:
+ * - Comprehensive documentation
+ * - Automation support (Playwright/Puppeteer)
+ * - Production-ready examples
+ * - Open-source MIT license
+ */
+
 // Color schemes with proper contrast
 const COLORS = [
   { name: "white", bg: "#ffffff", fg: "#000000", fgIfTransparent: "#ffffff" },

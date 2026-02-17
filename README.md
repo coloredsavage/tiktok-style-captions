@@ -2,6 +2,8 @@
 
 Create smooth, rounded text captions just like TikTok videos - with intelligent corner detection that automatically connects or rounds corners based on line widths.
 
+> **Inspired by** [Pelicanizer's Rounded Text Generator](https://pelicanizer.com/newsites/roundtext/) - this open-source implementation adds automation support, comprehensive documentation, and examples for video creators.
+
 [**🎨 Live Demo**](https://yourusername.github.io/tiktok-style-captions) <!-- Update with your GitHub username -->
 
 ![Demo Screenshot](demo.gif)
@@ -189,7 +191,17 @@ Requires support for CSS custom properties and `fit-content` sizing.
 
 ## Credits
 
-Algorithm inspired by the [Pelicanizer Rounded Text Generator](https://pelicanizer.com/newsites/roundtext/).
+This project is **inspired by and builds upon** the excellent [Pelicanizer Rounded Text Generator](https://pelicanizer.com/newsites/roundtext/) by Pelicanizer.
+
+The core corner detection algorithm and CSS technique for creating smooth rounded corners using pseudo-elements originates from their work. This open-source implementation:
+
+- Documents the algorithm with detailed explanations
+- Adds Playwright/Puppeteer integration for automation
+- Provides production-ready examples for video creators
+- Fixes common implementation issues
+- Makes it easy to integrate into automated workflows
+
+**Thank you to Pelicanizer for the original innovation!** 🙏
 
 ## License
 
