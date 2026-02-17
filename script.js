@@ -45,6 +45,8 @@ const colorInputsEl = document.getElementById("color-inputs");
 const transparentBackgroundCheckboxEl = document.getElementById("misc-transparent-bg");
 const createButtonEl = document.getElementById("button-create");
 const textEl = document.getElementById("text");
+const customBgColorEl = document.getElementById("custom-bg-color");
+const customFgColorEl = document.getElementById("custom-fg-color");
 
 // Generate color input radio buttons
 COLORS.forEach((color, i) => {
@@ -70,28 +72,41 @@ COLORS.forEach((color, i) => {
   colorInputsEl.appendChild(label);
 });
 
-// Color change handler
+// Apply bg + fg colors to the box
+function applyColors(bgColor, fgColor) {
+  const isTransparent = transparentBackgroundCheckboxEl.checked;
+  boxEl.style.setProperty("--bg-color", bgColor + (isTransparent ? "c0" : ""));
+  boxEl.style.setProperty("--fg-color", fgColor);
+  customBgColorEl.value = bgColor;
+  customFgColorEl.value = fgColor;
+}
+
+// Preset swatch change handler
 colorInputsEl.querySelectorAll('input[type=radio]').forEach(el => {
   el.onchange = evt => {
-    const isTransparent = transparentBackgroundCheckboxEl.checked;
-    const dataset = evt.target.dataset;
-
-    // Update CSS custom properties
-    boxEl.style.setProperty(
-      "--bg-color",
-      dataset.bgColor + (isTransparent ? "c0" : "") // Add alpha for transparency
-    );
-    boxEl.style.setProperty(
-      "--fg-color",
-      isTransparent ? dataset.fgColorIfTransparent : dataset.fgColor
-    );
+    const d = evt.target.dataset;
+    const fg = transparentBackgroundCheckboxEl.checked ? d.fgColorIfTransparent : d.fgColor;
+    applyColors(d.bgColor, fg);
   };
 
-  // Trigger initial color
   if (el.checked) {
     el.dispatchEvent(new Event("change"));
   }
 });
+
+// Custom color picker handlers — deselect presets, apply immediately
+customBgColorEl.oninput = () => {
+  colorInputsEl.querySelectorAll('input[type=radio]').forEach(el => el.checked = false);
+  boxEl.style.setProperty(
+    "--bg-color",
+    customBgColorEl.value + (transparentBackgroundCheckboxEl.checked ? "c0" : "")
+  );
+};
+
+customFgColorEl.oninput = () => {
+  colorInputsEl.querySelectorAll('input[type=radio]').forEach(el => el.checked = false);
+  boxEl.style.setProperty("--fg-color", customFgColorEl.value);
+};
 
 // Alignment change handler
 alignInputsEl.querySelectorAll('input[type=radio]').forEach(el => {
@@ -108,9 +123,14 @@ alignInputsEl.querySelectorAll('input[type=radio]').forEach(el => {
 });
 
 // Transparent background toggle
-transparentBackgroundCheckboxEl.onchange = evt => {
-  // Re-trigger color change to apply transparency
-  colorInputsEl.querySelector('input[type=radio]:checked').dispatchEvent(new Event("change"));
+transparentBackgroundCheckboxEl.onchange = () => {
+  const checked = colorInputsEl.querySelector('input[type=radio]:checked');
+  if (checked) {
+    checked.dispatchEvent(new Event("change"));
+  } else {
+    // Re-apply custom colors with updated transparency
+    customBgColorEl.dispatchEvent(new Event("input"));
+  }
 };
 
 // Core corner detection algorithm

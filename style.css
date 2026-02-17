@@ -107,58 +107,73 @@ body {
   font-family: Arial, sans-serif;
   font-size: 14px;
   margin: 0;
-  padding: 20px 30px;
+  padding: 40px 48px;
   background: #fff;
   color: #000;
 }
 
 #page {
-  max-width: 900px;
+  max-width: 960px;
 }
 
-h1 { font-size: 22px; margin: 0 0 6px 0; }
-p  { margin: 0 0 8px 0; }
-hr { margin: 14px 0; border: none; border-top: 1px solid #ccc; }
+h1 { font-size: 22px; margin: 0 0 20px 0; }
+hr { margin: 0 0 32px 0; border: none; border-top: 1px solid #ccc; }
 a  { color: #00e; }
 
 #layout {
   display: flex;
-  gap: 40px;
+  gap: 60px;
   align-items: flex-start;
 }
 
+/* Controls */
+
 #controls {
-  width: 220px;
+  width: 240px;
   flex-shrink: 0;
+}
+
+.control-group {
+  margin-bottom: 24px;
+}
+
+.control-group > label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.hint {
+  font-weight: normal;
+  color: #666;
 }
 
 #controls textarea {
   width: 100%;
   font-family: Arial, sans-serif;
   font-size: 13px;
-  padding: 4px;
+  padding: 6px;
   border: 1px solid #999;
   resize: vertical;
 }
 
 #align-inputs {
   display: flex;
-  gap: 10px;
+  gap: 14px;
   align-items: center;
 }
 
 #color-inputs {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 4px;
+  gap: 5px;
 }
 
 .color-label {
   display: block;
-  width: 24px;
-  height: 24px;
-  border: 2px solid #999;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #bbb;
   cursor: pointer;
 }
 
@@ -166,17 +181,58 @@ input[type="radio"][name="color"] { display: none; }
 input[type="radio"][name="color"]:checked + .color-label {
   border-color: #000;
   outline: 2px solid #00e;
+  outline-offset: 1px;
+}
+
+#custom-colors {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.color-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-picker-row input[type="color"] {
+  width: 36px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid #999;
+  cursor: pointer;
+}
+
+.control-group > label input[type="checkbox"] {
+  margin-right: 6px;
 }
 
 #button-create {
-  padding: 6px 14px;
+  width: 100%;
+  padding: 9px 0;
   font-size: 14px;
   cursor: pointer;
 }
 
+/* Preview */
+
 #preview {
   flex: 1;
-  background: #eee;
-  padding: 40px 30px;
-  min-height: 200px;
+  background: #e8e8e8;
+  padding: 60px 40px;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Footer */
+
+footer {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid #ccc;
+  color: #666;
+  font-size: 13px;
 }

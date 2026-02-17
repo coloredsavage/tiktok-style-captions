@@ -12,40 +12,71 @@
   <div id="page">
 
     <h1>TikTok-Style Captions</h1>
-    <p>Inspired by <a href="https://pelicanizer.com/newsites/roundtext/" target="_blank">Pelicanizer's Rounded Text Generator</a>. <a href="https://github.com/yourusername/tiktok-style-captions">GitHub</a> · MIT License</p>
 
     <hr>
 
     <div id="layout">
       <div id="controls">
-        <p><strong>Text</strong> (one line per caption)</p>
-        <textarea id="text" rows="6">what i wish i knew
+
+        <div class="control-group">
+          <label>Text <span class="hint">(one line per caption)</span></label>
+          <textarea id="text" rows="6">what i wish i knew
 before 6 months of rejections
 found something that fixed it</textarea>
-
-        <p><strong>Align</strong></p>
-        <div id="align-inputs">
-          <input type="radio" name="align" id="align-left" value="left" checked>
-          <label for="align-left">Left</label>
-          <input type="radio" name="align" id="align-center" value="center">
-          <label for="align-center">Center</label>
-          <input type="radio" name="align" id="align-right" value="right">
-          <label for="align-right">Right</label>
         </div>
 
-        <p><strong>Color</strong></p>
-        <div id="color-inputs"></div>
+        <div class="control-group">
+          <label>Align</label>
+          <div id="align-inputs">
+            <input type="radio" name="align" id="align-left" value="left" checked>
+            <label for="align-left">Left</label>
+            <input type="radio" name="align" id="align-center" value="center">
+            <label for="align-center">Center</label>
+            <input type="radio" name="align" id="align-right" value="right">
+            <label for="align-right">Right</label>
+          </div>
+        </div>
 
-        <p><input type="checkbox" id="misc-transparent-bg"> <label for="misc-transparent-bg">Transparent background</label></p>
+        <div class="control-group">
+          <label>Color scheme</label>
+          <div id="color-inputs"></div>
+        </div>
 
-        <br>
+        <div class="control-group">
+          <label>Custom colors</label>
+          <div id="custom-colors">
+            <div class="color-picker-row">
+              <input type="color" id="custom-bg-color" value="#ffffff">
+              <label for="custom-bg-color">Background</label>
+            </div>
+            <div class="color-picker-row">
+              <input type="color" id="custom-fg-color" value="#000000">
+              <label for="custom-fg-color">Text</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>
+            <input type="checkbox" id="misc-transparent-bg">
+            Transparent background
+          </label>
+        </div>
+
         <button id="button-create">Download PNG</button>
+
       </div>
 
       <div id="preview">
         <div id="box" data-align="left" style="--bg-color: #ffffff; --fg-color: #000000;"></div>
       </div>
     </div>
+
+    <footer>
+      Inspired by <a href="https://pelicanizer.com/newsites/roundtext/" target="_blank">Pelicanizer's Rounded Text Generator</a> &nbsp;·&nbsp;
+      <a href="https://github.com/yourusername/tiktok-style-captions" target="_blank">GitHub</a> &nbsp;·&nbsp;
+      MIT License
+    </footer>
 
   </div>
 
